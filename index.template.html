@@ -203,8 +203,9 @@ var BUNDLE = /*__DATA__*/;
     var ticks = 6; for (var t = 0; t <= ticks; t++) { var ix = Math.round((n - 1) * t / ticks); var anchor = t === 0 ? "start" : t === ticks ? "end" : "middle"; svg += '<text class="axis" x="' + x(ix) + '" y="' + (H - 7) + '" text-anchor="' + anchor + '">' + idxToLabel(timeline[ix]) + '</text>'; }
 
     function path(arr, yf) {
-      var d = "", pen = false;
-      for (var i = 0; i < arr.length; i++) { if (arr[i] == null) { pen = false; continue; } var px = x(i).toFixed(1), py = yf(arr[i]).toFixed(1); d += (pen ? "L" : "M") + px + " " + py + " "; pen = true; }
+      // connect across nulls so lower-frequency series (e.g. quarterly GDP) draw a continuous line
+      var d = "", started = false;
+      for (var i = 0; i < arr.length; i++) { if (arr[i] == null) continue; var px = x(i).toFixed(1), py = yf(arr[i]).toFixed(1); d += (started ? "L" : "M") + px + " " + py + " "; started = true; }
       return d;
     }
     if (B) svg += '<path d="' + path(B, opts.shared ? yL : yR) + '" fill="none" stroke="var(--accent2)" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>';
@@ -265,7 +266,7 @@ var BUNDLE = /*__DATA__*/;
       html += '<div class="kpi"><div class="k">Latest — ' + mb.id + '</div><div class="v" style="color:var(--accent2)">' + fmt(latestB) + '</div></div>';
       var rc = r == null ? "" : (r >= 0 ? "pos" : "neg");
       html += '<div class="kpi"><div class="k">Correlation (r)</div><div class="v ' + rc + '">' + (r == null ? "—" : r.toFixed(2)) + '</div></div>';
-      html += '<div class="kpi"><div class="k">Paired months</div><div class="v">' + pairs.length + '</div></div>';
+      html += '<div class="kpi"><div class="k">Paired obs</div><div class="v">' + pairs.length + '</div></div>';
     } else {
       var mn = Infinity, mx = -Infinity; A.forEach(function (v) { if (v != null) { if (v < mn) mn = v; if (v > mx) mx = v; } });
       html += '<div class="kpi"><div class="k">Minimum</div><div class="v">' + fmt(mn) + '</div></div>';
@@ -288,7 +289,7 @@ var BUNDLE = /*__DATA__*/;
       else {
         var strength = Math.abs(r) >= .8 ? "very strong" : Math.abs(r) >= .6 ? "strong" : Math.abs(r) >= .4 ? "moderate" : Math.abs(r) >= .2 ? "weak" : "little to no";
         var dir = r >= 0 ? "positive" : "negative";
-        html += 'Over this window, <b>' + ma.name + '</b> and <b>' + mb.name + '</b> show a <b>' + strength + ' ' + dir + '</b> linear relationship (r = ' + r.toFixed(2) + ', ' + pairs.length + ' paired months).';
+        html += 'Over this window, <b>' + ma.name + '</b> and <b>' + mb.name + '</b> show a <b>' + strength + ' ' + dir + '</b> linear relationship (r = ' + r.toFixed(2) + ', ' + pairs.length + ' paired points).';
         html += ' r² = ' + (r * r).toFixed(2) + ', so about <b>' + Math.round(r * r * 100) + '%</b> of the variation in one moves with the other. Correlation is not causation — try different transformations and windows.';
       }
       html += '</p></div></div>';

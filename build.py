@@ -15,16 +15,20 @@ from datetime import date
 SERIES = [
     ("UNRATE",   "Unemployment Rate",       "%",                 "Labor",       "BLS"),
     ("PAYEMS",   "Nonfarm Payrolls",        "thousands",         "Labor",       "BLS"),
+    ("ICSA",     "Initial Jobless Claims",  "claims",            "Labor",       "DOL"),
     ("CPIAUCSL", "CPI (All Items)",         "index 1982-84=100", "Prices",      "BLS"),
     ("PCEPI",    "PCE Price Index",         "index 2017=100",    "Prices",      "BEA"),
     ("PPIACO",   "PPI (All Commodities)",   "index 1982=100",    "Prices",      "BLS"),
     ("FEDFUNDS", "Federal Funds Rate",      "%",                 "Rates",       "Federal Reserve"),
     ("GS10",     "10-Year Treasury Yield",  "%",                 "Rates",       "Federal Reserve"),
     ("GS2",      "2-Year Treasury Yield",   "%",                 "Rates",       "Federal Reserve"),
+    ("T10Y2Y",   "10Y-2Y Treasury Spread",  "%",                 "Rates",       "Federal Reserve"),
     ("M2SL",     "M2 Money Stock",          "$ billions",        "Money",       "Federal Reserve"),
     ("INDPRO",   "Industrial Production",   "index 2017=100",    "Output",      "Federal Reserve"),
+    ("GDPC1",    "Real GDP (quarterly)",    "$ billions 2017",   "Output",      "BEA"),
     ("HOUST",    "Housing Starts",          "thousands",         "Housing",     "Census"),
     ("RSAFS",    "Retail Sales",            "$ millions",        "Consumer",    "Census"),
+    ("PCE",      "Personal Consumption Exp.","$ billions",       "Consumer",    "BEA"),
     ("WTISPLC",  "WTI Crude Oil Price",     "$/barrel",          "Commodities", "EIA"),
 ]
 
